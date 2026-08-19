@@ -51,13 +51,16 @@ const MedicationWidget = {
     const mm = String(now.getMinutes()).padStart(2, "0");
     const nowStr = `${hh}:${mm}`;
 
+    // Fires at or after the scheduled time (not just the exact minute),
+    // so a page reload or reboot around that time still catches it.
+    // Re-nags every ~60s (via auto-dismiss + re-check) until confirmed.
     const due = (CONFIG.medications || []).find(
-      m => m.time === nowStr && !this.isConfirmedToday(m.name)
+      m => m.time <= nowStr && !this.isConfirmedToday(m.name)
     );
 
     if (due) this.trigger(due);
   },
-
+  
   trigger(med) {
     this.activeMed = med;
     this.nameEl.textContent = med.name;
