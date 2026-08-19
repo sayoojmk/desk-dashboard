@@ -221,3 +221,61 @@ html, body {
   .lower { flex-direction: column; gap: 3vh; }
   .panel-divider { display: none; height: 1px; width: 100%; background: var(--rule); }
 }
+/* ---------- Medication alert ---------- */
+
+.med-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.88);
+}
+
+.med-overlay.active {
+  display: flex;
+}
+
+.med-card {
+  text-align: center;
+  padding: 6vh 8vw;
+  animation: med-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes med-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.75; }
+}
+
+.med-label {
+  font-family: var(--font-mono);
+  font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  margin-bottom: 2vh;
+}
+
+.med-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 7vw, 4rem);
+  color: var(--ink);
+  margin-bottom: 5vh;
+}
+
+.med-confirm {
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  letter-spacing: 0.08em;
+  padding: 1.4em 2.4em;
+  background: var(--accent);
+  color: var(--paper);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.med-confirm:active {
+  opacity: 0.8;
+}

@@ -12,6 +12,7 @@ const App = {
     ClockWidget.init();
     WeatherWidget.init();
     CalendarWidget.init();
+    MedicationWidget.init();
     this.renderStatus();
     setInterval(() => this.renderStatus(), 60 * 1000);
   },
