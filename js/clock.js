@@ -20,10 +20,12 @@ const ClockWidget = {
   tick() {
     const now = new Date();
 
-    const hh = String(now.getHours()).padStart(2, "0");
+    let hh = now.getHours();
+    const ampm = hh >= 12 ? "PM" : "AM";
+    hh = hh % 12 || 12;
     const mm = String(now.getMinutes()).padStart(2, "0");
     const ss = String(now.getSeconds()).padStart(2, "0");
-    this.els.clock.textContent = `${hh}:${mm}:${ss}`;
+    this.els.clock.textContent = `${hh}:${mm}:${ss} ${ampm}`;
 
     const days = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
     const months = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
