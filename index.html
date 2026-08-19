@@ -58,18 +58,31 @@
 
     <div class="hairline"></div>
 
-    <section class="timer-section">
-      <div class="panel-label">TIMERS</div>
-      <div class="timer-presets" id="timer-presets"></div>
-      <div class="timer-custom">
-        <input type="number" id="timer-custom-minutes" placeholder="min" min="1" max="180" inputmode="numeric">
-        <button id="timer-custom-start">Start</button>
-      </div>
+    <!-- Utility launcher — small widgets open here. Add more launcher-btn
+         entries + their own modal-overlay for future widgets. -->
+    <section class="launcher-row" id="launcher-row">
+      <button class="launcher-btn" id="open-timer-modal">⏱ Timer</button>
       <div class="timer-active" id="timer-active"></div>
     </section>
 
     <div class="status-row" id="status-row"></div>
 
+    <!-- Timer picker (not an alarm — a dismissible selection panel) -->
+    <div class="modal-overlay" id="timer-modal">
+      <div class="modal-card">
+        <div class="modal-header">
+          <span class="modal-title">START A TIMER</span>
+          <button class="modal-close" id="timer-modal-close">✕</button>
+        </div>
+        <div class="timer-presets" id="timer-presets"></div>
+        <div class="timer-custom">
+          <input type="number" id="timer-custom-minutes" placeholder="min" min="1" max="180" inputmode="numeric">
+          <button id="timer-custom-start">Start</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Medication alarm -->
     <div class="med-overlay" id="med-overlay">
       <div class="med-card">
         <div class="med-label">MEDICINE TIME</div>
@@ -78,6 +91,7 @@
       </div>
     </div>
 
+    <!-- Timer alarm -->
     <div class="timer-overlay" id="timer-overlay">
       <div class="timer-card">
         <div class="timer-overlay-label">TIMER DONE</div>
