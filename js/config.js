@@ -9,8 +9,8 @@ const CONFIG = {
   // Get lat/lon from https://www.latlong.net or Google Maps (right-click a point).
   location: {
     name: "Thiruvananthapuram",
-    lat: 8.5241,
-    lon: 76.9366,
+    lat: 8.5557,
+    lon: 76.8684,
   },
 
   // --- Units ---
