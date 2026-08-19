@@ -1,9 +1,8 @@
 // ============================================================
-// APP — wires up widgets. To add a new module later (e.g. a
-// "work status" or "trading bot" panel), write it the same way
-// as weather.js / calendar.js (an object with init()/fetch()/
-// render()), give it a spot in index.html + style.css, then
-// call its .init() below.
+// APP — wires up widgets. To add a new module later, write it
+// the same way as weather.js / calendar.js (an object with
+// init()/fetch()/render()), give it a spot in index.html +
+// style.css, then call its .init() below.
 // ============================================================
 
 const App = {
@@ -13,6 +12,7 @@ const App = {
     WeatherWidget.init();
     CalendarWidget.init();
     MedicationWidget.init();
+    TimerWidget.init();
     this.renderStatus();
     setInterval(() => this.renderStatus(), 60 * 1000);
   },

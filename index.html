@@ -28,11 +28,7 @@
 
     <section class="clock-block">
       <div class="clock" id="clock">--:--:--</div>
-      <div class="date-row">
-        <span class="date" id="date">-- --- ----</span>
-        <span class="rule-dot">·</span>
-        <span class="battery" id="battery"></span>
-      </div>
+      <div class="date" id="date">-- --- ----</div>
     </section>
 
     <div class="hairline"></div>
@@ -60,7 +56,20 @@
 
     </section>
 
+    <div class="hairline"></div>
+
+    <section class="timer-section">
+      <div class="panel-label">TIMERS</div>
+      <div class="timer-presets" id="timer-presets"></div>
+      <div class="timer-custom">
+        <input type="number" id="timer-custom-minutes" placeholder="min" min="1" max="180" inputmode="numeric">
+        <button id="timer-custom-start">Start</button>
+      </div>
+      <div class="timer-active" id="timer-active"></div>
+    </section>
+
     <div class="status-row" id="status-row"></div>
+
     <div class="med-overlay" id="med-overlay">
       <div class="med-card">
         <div class="med-label">MEDICINE TIME</div>
@@ -68,6 +77,15 @@
         <button class="med-confirm" id="med-confirm">✓ Taken</button>
       </div>
     </div>
+
+    <div class="timer-overlay" id="timer-overlay">
+      <div class="timer-card">
+        <div class="timer-overlay-label">TIMER DONE</div>
+        <div class="timer-overlay-name" id="timer-overlay-name">—</div>
+        <button class="timer-confirm" id="timer-confirm">✓ Done</button>
+      </div>
+    </div>
+
   </main>
 
   <script src="js/config.js"></script>
@@ -75,6 +93,7 @@
   <script src="js/weather.js"></script>
   <script src="js/calendar.js"></script>
   <script src="js/medication.js"></script>
+  <script src="js/timer.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

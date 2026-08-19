@@ -6,6 +6,7 @@
   --ink-faint:  #7A7972;
   --rule:       #3A3A37;
   --accent:     #C9A467;
+  --accent2:    #6C93B8;
 
   --font-display: 'JetBrains Mono', monospace;
   --font-body:    'Inter', sans-serif;
@@ -43,7 +44,7 @@ html, body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 6vh 6vw;
+  padding: 5vh 6vw;
 }
 
 /* ---------- Clock ---------- */
@@ -51,7 +52,7 @@ html, body {
 .clock-block {
   display: flex;
   flex-direction: column;
-  gap: 0.6vh;
+  gap: 0.8vh;
 }
 
 .clock {
@@ -64,21 +65,14 @@ html, body {
   color: var(--ink);
 }
 
-.date-row {
-  display: flex;
-  align-items: baseline;
-  gap: 0.6em;
+/* Bigger, calendar-glance date — a secondary hero, not a caption */
+.date {
   font-family: var(--font-mono);
-  font-size: clamp(0.85rem, 2.2vw, 1.1rem);
-  color: var(--ink-soft);
-  letter-spacing: 0.08em;
+  font-weight: 600;
+  font-size: clamp(1.3rem, 4.6vw, 2.5rem);
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-}
-
-.rule-dot { color: var(--ink-faint); }
-
-.battery {
-  color: var(--ink-faint);
+  color: var(--ink-soft);
 }
 
 /* ---------- Divider ---------- */
@@ -86,7 +80,7 @@ html, body {
 .hairline {
   height: 1px;
   background: var(--rule);
-  margin: 4vh 0;
+  margin: 3vh 0;
   width: 100%;
 }
 
@@ -189,6 +183,86 @@ html, body {
   font-size: clamp(0.85rem, 2vw, 1rem);
 }
 
+/* ---------- Timers ---------- */
+
+.timer-section {}
+
+.timer-presets {
+  display: flex;
+  gap: 0.8em;
+  flex-wrap: wrap;
+  margin-top: 0.4vh;
+}
+
+.timer-btn {
+  font-family: var(--font-mono);
+  font-size: clamp(0.75rem, 1.8vw, 0.95rem);
+  padding: 0.65em 1.1em;
+  background: var(--paper-dim);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.timer-btn:active { opacity: 0.7; }
+
+.timer-custom {
+  display: flex;
+  gap: 0.6em;
+  margin-top: 1.2vh;
+  align-items: center;
+}
+
+.timer-custom input {
+  width: 4.5em;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  background: var(--paper-dim);
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  padding: 0.55em 0.6em;
+  border-radius: 4px;
+}
+
+.timer-custom input::placeholder { color: var(--ink-faint); }
+
+.timer-custom button {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  padding: 0.55em 1.1em;
+  background: var(--accent2);
+  color: var(--paper);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.timer-active {
+  display: flex;
+  gap: 0.7em;
+  flex-wrap: wrap;
+  margin-top: 1.2vh;
+}
+
+.timer-chip {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  background: var(--paper-dim);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 0.5em 0.9em;
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  color: var(--ink-soft);
+}
+
+.timer-chip .cancel {
+  cursor: pointer;
+  color: var(--ink-faint);
+}
+
 /* ---------- Status row ---------- */
 
 .status-row {
@@ -215,12 +289,6 @@ html, body {
   animation: eink-flicker 260ms steps(2, end);
 }
 
-/* ---------- Small phone / portrait fallback ---------- */
-
-@media (max-aspect-ratio: 4/5) {
-  .lower { flex-direction: column; gap: 3vh; }
-  .panel-divider { display: none; height: 1px; width: 100%; background: var(--rule); }
-}
 /* ---------- Medication alert ---------- */
 
 .med-overlay {
@@ -233,17 +301,15 @@ html, body {
   background: rgba(0,0,0,0.88);
 }
 
-.med-overlay.active {
-  display: flex;
-}
+.med-overlay.active { display: flex; }
 
 .med-card {
   text-align: center;
   padding: 6vh 8vw;
-  animation: med-pulse 1.2s ease-in-out infinite;
+  animation: alert-pulse 1.2s ease-in-out infinite;
 }
 
-@keyframes med-pulse {
+@keyframes alert-pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.75; }
 }
@@ -276,6 +342,61 @@ html, body {
   cursor: pointer;
 }
 
-.med-confirm:active {
-  opacity: 0.8;
+.med-confirm:active { opacity: 0.8; }
+
+/* ---------- Timer alert (visually distinct: blue accent vs medicine's amber) ---------- */
+
+.timer-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.88);
+}
+
+.timer-overlay.active { display: flex; }
+
+.timer-card {
+  text-align: center;
+  padding: 6vh 8vw;
+  animation: alert-pulse 1.2s ease-in-out infinite;
+}
+
+.timer-overlay-label {
+  font-family: var(--font-mono);
+  font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+  letter-spacing: 0.2em;
+  color: var(--accent2);
+  margin-bottom: 2vh;
+}
+
+.timer-overlay-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 7vw, 4rem);
+  color: var(--ink);
+  margin-bottom: 5vh;
+}
+
+.timer-confirm {
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  letter-spacing: 0.08em;
+  padding: 1.4em 2.4em;
+  background: var(--accent2);
+  color: var(--paper);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.timer-confirm:active { opacity: 0.8; }
+
+/* ---------- Small phone / portrait fallback ---------- */
+
+@media (max-aspect-ratio: 4/5) {
+  .lower { flex-direction: column; gap: 3vh; }
+  .panel-divider { display: none; height: 1px; width: 100%; background: var(--rule); }
 }

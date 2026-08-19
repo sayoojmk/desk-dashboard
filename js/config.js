@@ -42,6 +42,21 @@ const CONFIG = {
   medicationApiUrl: "https://dashboard-api-423410331874.europe-west1.run.app/",
   medicationAlarmSeconds: 60, // how long it beeps/shows if not confirmed
 
+  // --- Timers ---
+  // Preset quick-start timers, shown as buttons. Rename/retime/add more
+  // freely — no other file needs to change. A custom-minutes input is
+  // always shown alongside these on the dashboard.
+  // NOTE: unlike medication alerts, timer alerts do NOT auto-dismiss —
+  // they ring until you tap "Done". This is deliberate (e.g. a water
+  // pump timer should not silently stop nagging if you're not there).
+  timers: {
+    presets: [
+      { label: "Water Pump", minutes: 7 },
+      { label: "Preset 2", minutes: 20 },
+      { label: "Preset 3", minutes: 23 },
+    ],
+  },
+
   // --- Refresh intervals (ms) ---
   refresh: {
     clock: 1000,
