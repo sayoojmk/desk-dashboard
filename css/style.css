@@ -143,6 +143,16 @@ html, body {
   letter-spacing: 0.04em;
 }
 
+.weather-secondary {
+  margin-top: 1.4vh;
+  padding-top: 0.8vh;
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: clamp(0.7rem, 1.6vw, 0.85rem);
+  color: var(--ink-soft);
+  letter-spacing: 0.06em;
+}
+
 /* Agenda */
 
 .agenda-list {
