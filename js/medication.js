@@ -1,12 +1,13 @@
 // ============================================================
 // MEDICATION REMINDER WIDGET
-// Checks every second against CONFIG.medications. When the
-// clock hits a configured time, shows a full-screen alert with
-// the medicine name and a short repeating beep until confirmed
-// or CONFIG.medicationAlarmSeconds elapses.
-//
-// A confirmation is remembered per medicine per day (localStorage)
-// so it won't re-trigger once you've confirmed it.
+// Pulls today's medications from the Cloud Function (backed by
+// the Google Sheet) — no hardcoded list here. Shows a full-screen
+// alert with the medicine + dose and a repeating beep once its
+// scheduled time arrives, until confirmed or the alarm window
+// elapses. Confirming posts back to the same API, which logs it
+// to the MedicationLog sheet — that's what "what did I take
+// yesterday" answers, and it persists across devices/reloads,
+// unlike the old localStorage-only version.
 // ============================================================
 
 const MedicationWidget = {
@@ -19,6 +20,8 @@ const MedicationWidget = {
   autoDismissTimeout: null,
   activeMed: null,
 
+  meds: [], // cached from the API: [{ name, dose, time, taken }]
+
   init() {
     this.overlayEl = document.getElementById("med-overlay");
     this.nameEl = document.getElementById("med-name");
@@ -26,21 +29,27 @@ const MedicationWidget = {
 
     this.confirmBtn.addEventListener("click", () => this.confirm());
 
+    this.fetchMeds();
+    setInterval(() => this.fetchMeds(), CONFIG.refresh.medication || 5 * 60 * 1000);
     setInterval(() => this.check(), 1000);
   },
 
-  todayKey(medName) {
-    const d = new Date();
-    const dateStr = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
-    return `med-taken:${medName}:${dateStr}`;
+  async fetchMeds() {
+    if (!CONFIG.medicationApiUrl) return;
+    try {
+      const res = await fetch(CONFIG.medicationApiUrl);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      this.meds = data.medications || [];
+    } catch (err) {
+      console.error("[medication] fetch failed:", err);
+    }
   },
 
-  isConfirmedToday(medName) {
-    try {
-      return localStorage.getItem(this.todayKey(medName)) === "1";
-    } catch {
-      return false;
-    }
+  // zero-pads API times like "8:45" -> "08:45" for string comparison
+  _normTime(t) {
+    const [h, m] = String(t).split(":");
+    return `${h.padStart(2, "0")}:${(m || "00").padStart(2, "0")}`;
   },
 
   check() {
@@ -51,35 +60,47 @@ const MedicationWidget = {
     const mm = String(now.getMinutes()).padStart(2, "0");
     const nowStr = `${hh}:${mm}`;
 
-    // Fires at or after the scheduled time (not just the exact minute),
-    // so a page reload or reboot around that time still catches it.
-    // Re-nags every ~60s (via auto-dismiss + re-check) until confirmed.
-    const due = (CONFIG.medications || []).find(
-      m => m.time <= nowStr && !this.isConfirmedToday(m.name)
-    );
-
+    // due = scheduled time has arrived (or passed) and not yet confirmed today
+    const due = this.meds.find(m => !m.taken && this._normTime(m.time) <= nowStr);
     if (due) this.trigger(due);
   },
-  
+
   trigger(med) {
     this.activeMed = med;
-    this.nameEl.textContent = med.name;
+    this.nameEl.textContent = med.dose ? `${med.name} · ${med.dose}` : med.name;
     this.overlayEl.classList.add("active");
     this.startBeeping();
 
+    // Re-nags: if not confirmed, hides after medicationAlarmSeconds and
+    // check() will simply pick it up again on the next 1s tick since
+    // .taken is still false.
     this.autoDismissTimeout = setTimeout(() => {
       this.stopBeeping();
       this.overlayEl.classList.remove("active");
-      this.activeMed = null; // will re-trigger next minute if still not confirmed... 
+      this.activeMed = null;
     }, (CONFIG.medicationAlarmSeconds || 60) * 1000);
   },
 
-  confirm() {
+  async confirm() {
     if (!this.activeMed) return;
-    try {
-      localStorage.setItem(this.todayKey(this.activeMed.name), "1");
-    } catch {}
+    const med = this.activeMed;
+
+    // mark taken locally right away so it doesn't re-trigger while the
+    // network request is in flight
+    med.taken = true;
     this.dismiss();
+
+    try {
+      await fetch(CONFIG.medicationApiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: med.name, dose: med.dose }),
+      });
+    } catch (err) {
+      console.error("[medication] confirm failed to log:", err);
+      // stays marked taken locally for the rest of today either way,
+      // so it won't keep nagging even if the log write failed
+    }
   },
 
   dismiss() {

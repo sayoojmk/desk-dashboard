@@ -35,20 +35,21 @@ const CONFIG = {
   // How many upcoming events to show
   agendaMaxItems: 4,
 
+  // --- Medication reminders ---
+  // Medicines, doses, and schedule now live in a Google Sheet, served
+  // through this Cloud Function. Edit the sheet any time — no code or
+  // redeploy needed for a dose/schedule change.
+  medicationApiUrl: "https://dashboard-api-423410331874.europe-west1.run.app/",
+  medicationAlarmSeconds: 60, // how long it beeps/shows if not confirmed
+
   // --- Refresh intervals (ms) ---
   refresh: {
     clock: 1000,
     weather: 10 * 60 * 1000,   // 10 min
     calendar: 5 * 60 * 1000,   // 5 min
+    medication: 5 * 60 * 1000, // 5 min — how often to re-pull today's med list
   },
 
   // --- Behavior ---
   flickerOnRefresh: true, // e-ink style ghost-flicker when data updates
-
-    // --- Medication reminders ---
-  // time is 24hr "HH:MM". Add as many as you like.
-  medications: [
-    { name: "Tacrolimus", time: "13:35" },
-  ],
-  medicationAlarmSeconds: 60, // how long it beeps/shows if not confirmed
 };
