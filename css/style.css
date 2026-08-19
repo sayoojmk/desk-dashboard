@@ -1,11 +1,11 @@
 :root {
-  --paper:      #EAE9E4;
-  --paper-dim:  #DFDED8;
-  --ink:        #1B1B1A;
-  --ink-soft:   #6B6A65;
-  --ink-faint:  #9B9A94;
-  --rule:       #C9C7BF;
-  --accent:     #8A6D3B;
+  --paper:      #1B1B1A;
+  --paper-dim:  #242422;
+  --ink:        #EAE9E4;
+  --ink-soft:   #A9A8A2;
+  --ink-faint:  #7A7972;
+  --rule:       #3A3A37;
+  --accent:     #C9A467;
 
   --font-display: 'JetBrains Mono', monospace;
   --font-body:    'Inter', sans-serif;
@@ -33,7 +33,7 @@ html, body {
   height: 100%;
   pointer-events: none;
   z-index: 50;
-  mix-blend-mode: multiply;
+  mix-blend-mode: overlay;
 }
 
 .board {
