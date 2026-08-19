@@ -48,7 +48,7 @@ const CONFIG = {
     // --- Medication reminders ---
   // time is 24hr "HH:MM". Add as many as you like.
   medications: [
-    { name: "Blood pressure tablet", time: "08:30" },
+    { name: "Blood pressure tablet", time: "13:30" },
   ],
   medicationAlarmSeconds: 60, // how long it beeps/shows if not confirmed
 };
