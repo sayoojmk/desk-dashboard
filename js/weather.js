@@ -2,6 +2,8 @@
 // WEATHER WIDGET
 // Uses Open-Meteo (https://open-meteo.com) — free, no API key,
 // no CORS issues, fine to call directly from a static site.
+// Shows CONFIG.location prominently and CONFIG.secondaryLocation
+// (if set) as a compact second line.
 // ============================================================
 
 const WeatherWidget = {
@@ -10,10 +12,9 @@ const WeatherWidget = {
     temp: null,
     desc: null,
     sub: null,
+    secondary: null,
   },
 
-  // WMO weather codes -> short label
-  // https://open-meteo.com/en/docs (see "Weather variable documentation")
   codeMap: {
     0: "Clear sky", 1: "Mostly clear", 2: "Partly cloudy", 3: "Overcast",
     45: "Fog", 48: "Rime fog",
@@ -28,32 +29,51 @@ const WeatherWidget = {
     this.els.temp = document.getElementById("weather-temp");
     this.els.desc = document.getElementById("weather-desc");
     this.els.sub = document.getElementById("weather-sub");
+    this.els.secondary = document.getElementById("weather-secondary");
     this.fetch();
     setInterval(() => this.fetch(), CONFIG.refresh.weather);
   },
 
-  buildUrl() {
-    const { lat, lon } = CONFIG.location;
+  buildUrl(loc) {
     const unit = CONFIG.tempUnit === "fahrenheit" ? "fahrenheit" : "celsius";
-    return `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
+    return `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}` +
       `&current=temperature_2m,weather_code,wind_speed_10m` +
       `&daily=temperature_2m_max,temperature_2m_min` +
       `&temperature_unit=${unit}&wind_speed_unit=kmh&timezone=auto`;
   },
 
-  async fetch() {
-    try {
-      const res = await fetch(this.buildUrl());
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-      this.render(data);
-    } catch (err) {
-      console.error("[weather] fetch failed:", err);
-      this.els.desc.textContent = "Unavailable";
-    }
+  async fetchLocation(loc) {
+    const res = await fetch(this.buildUrl(loc));
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
   },
 
-  render(data) {
+  async fetch() {
+    try {
+      const data = await this.fetchLocation(CONFIG.location);
+      this.renderPrimary(data);
+    } catch (err) {
+      console.error("[weather] primary fetch failed:", err);
+      this.els.desc.textContent = "Unavailable";
+    }
+
+    if (CONFIG.secondaryLocation) {
+      try {
+        const data2 = await this.fetchLocation(CONFIG.secondaryLocation);
+        this.renderSecondary(data2);
+      } catch (err) {
+        console.error("[weather] secondary fetch failed:", err);
+        if (this.els.secondary) {
+          this.els.secondary.textContent =
+            `${CONFIG.secondaryLocation.name.toUpperCase()} UNAVAILABLE`;
+        }
+      }
+    }
+
+    if (CONFIG.flickerOnRefresh) App.flicker(document.getElementById("weather-panel"));
+  },
+
+  renderPrimary(data) {
     const cur = data.current;
     const day = data.daily;
     const unitSymbol = CONFIG.tempUnit === "fahrenheit" ? "°F" : "°C";
@@ -64,7 +84,13 @@ const WeatherWidget = {
       `H:${Math.round(day.temperature_2m_max[0])}${unitSymbol} ` +
       `L:${Math.round(day.temperature_2m_min[0])}${unitSymbol} · ` +
       `WIND ${Math.round(cur.wind_speed_10m)} KM/H`;
+  },
 
-    if (CONFIG.flickerOnRefresh) App.flicker(document.getElementById("weather-panel"));
+  renderSecondary(data) {
+    if (!this.els.secondary) return;
+    const cur = data.current;
+    const name = CONFIG.secondaryLocation.name.toUpperCase();
+    const desc = this.codeMap[cur.weather_code] || "—";
+    this.els.secondary.textContent = `${name} ${Math.round(cur.temperature_2m)}° ${desc}`;
   },
 };
