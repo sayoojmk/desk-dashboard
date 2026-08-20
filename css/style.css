@@ -47,6 +47,44 @@ html, body {
   padding: 5vh 6vw;
 }
 
+/* ---------- Running-timer ribbon (top of Home Screen) ---------- */
+/* Lives as the first item in .board's normal flow, so it gently
+   pushes the rest of the layout down when present and takes zero
+   space when empty — no overlap risk with the clock. */
+
+.timer-ribbon {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8vh;
+}
+
+.timer-ribbon:empty { display: none; }
+
+.timer-ribbon-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.1vh 1.4em;
+  background: var(--accent2);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: clamp(0.85rem, 2.1vw, 1.05rem);
+  letter-spacing: 0.05em;
+  border-radius: 5px;
+}
+
+.timer-ribbon-item .cancel {
+  cursor: pointer;
+  opacity: 0.85;
+  padding-left: 1em;
+}
+
+.timer-ribbon-item .cancel:active { opacity: 0.5; }
+
+/* Ribbon needs breathing room before the clock below it */
+.timer-ribbon:not(:empty) { margin-bottom: 3vh; }
+
 /* ---------- Clock ---------- */
 
 .clock-block {
@@ -183,85 +221,134 @@ html, body {
   font-size: clamp(0.85rem, 2vw, 1rem);
 }
 
-/* ---------- Timers ---------- */
+/* ---------- Utility launcher ---------- */
+/* Small buttons that open a modal-overlay panel. Add more
+   launcher-btn entries here for future small widgets. */
 
-.timer-section {}
-
-.timer-presets {
+.launcher-row {
   display: flex;
-  gap: 0.8em;
-  flex-wrap: wrap;
-  margin-top: 0.4vh;
+  align-items: center;
+  gap: 1em;
 }
 
-.timer-btn {
+.launcher-btn {
   font-family: var(--font-mono);
-  font-size: clamp(0.75rem, 1.8vw, 0.95rem);
-  padding: 0.65em 1.1em;
+  font-size: clamp(0.85rem, 2vw, 1.05rem);
+  padding: 0.8em 1.4em;
   background: var(--paper-dim);
   border: 1px solid var(--rule);
-  border-radius: 4px;
+  border-radius: 6px;
   color: var(--ink);
   cursor: pointer;
 }
 
-.timer-btn:active { opacity: 0.7; }
+.launcher-btn:active { opacity: 0.7; }
+
+/* ---------- Generic dismissible modal (reusable for future widgets) ---------- */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.75);
+}
+
+.modal-overlay.active { display: flex; }
+
+.modal-card {
+  width: min(86vw, 480px);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 3.5vh 5vw;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5vh;
+}
+
+.modal-title {
+  font-family: var(--font-mono);
+  font-size: clamp(0.8rem, 2vw, 1rem);
+  letter-spacing: 0.18em;
+  color: var(--ink-faint);
+}
+
+.modal-close {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  background: none;
+  border: none;
+  color: var(--ink-soft);
+  cursor: pointer;
+  padding: 0.3em 0.5em;
+}
+
+.modal-close:active { opacity: 0.6; }
+
+/* ---------- Timer picker contents (inside the modal) ---------- */
+
+.timer-presets {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.timer-btn {
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 2.6vw, 1.3rem);
+  font-weight: 600;
+  padding: 1.1em 1.4em;
+  background: var(--paper-dim);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+}
+
+.timer-btn:active { opacity: 0.6; }
 
 .timer-custom {
   display: flex;
-  gap: 0.6em;
-  margin-top: 1.2vh;
+  gap: 0.8em;
+  margin-top: 2vh;
   align-items: center;
 }
 
 .timer-custom input {
+  flex: 1;
   width: 4.5em;
   font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-size: 1.05rem;
   background: var(--paper-dim);
   border: 1px solid var(--rule);
   color: var(--ink);
-  padding: 0.55em 0.6em;
-  border-radius: 4px;
+  padding: 0.9em 0.8em;
+  border-radius: 6px;
 }
 
 .timer-custom input::placeholder { color: var(--ink-faint); }
 
 .timer-custom button {
   font-family: var(--font-mono);
-  font-size: 0.85rem;
-  padding: 0.55em 1.1em;
+  font-size: 1rem;
+  padding: 0.9em 1.4em;
   background: var(--accent2);
   color: var(--paper);
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
 }
 
-.timer-active {
-  display: flex;
-  gap: 0.7em;
-  flex-wrap: wrap;
-  margin-top: 1.2vh;
-}
-
-.timer-chip {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  background: var(--paper-dim);
-  border: 1px solid var(--rule);
-  border-radius: 4px;
-  padding: 0.5em 0.9em;
-  display: flex;
-  align-items: center;
-  gap: 0.6em;
-  color: var(--ink-soft);
-}
-
-.timer-chip .cancel {
-  cursor: pointer;
-  color: var(--ink-faint);
-}
+.timer-custom button:active { opacity: 0.7; }
 
 /* ---------- Status row ---------- */
 
@@ -344,7 +431,10 @@ html, body {
 
 .med-confirm:active { opacity: 0.8; }
 
-/* ---------- Timer alert (visually distinct: blue accent vs medicine's amber) ---------- */
+/* ---------- Timer alert ---------- */
+/* Deliberately louder/harsher than the medicine alert: the whole
+   screen strobes (not just the card), since this needs faster
+   acknowledgment (e.g. a water pump about to overflow). */
 
 .timer-overlay {
   position: fixed;
@@ -353,15 +443,21 @@ html, body {
   display: none;
   align-items: center;
   justify-content: center;
-  background: rgba(0,0,0,0.88);
 }
 
-.timer-overlay.active { display: flex; }
+.timer-overlay.active {
+  display: flex;
+  animation: timer-strobe 0.45s steps(2, end) infinite;
+}
+
+@keyframes timer-strobe {
+  0%, 100% { background: rgba(0,0,0,0.92); }
+  50%      { background: rgba(108,147,184,0.55); }
+}
 
 .timer-card {
   text-align: center;
   padding: 6vh 8vw;
-  animation: alert-pulse 1.2s ease-in-out infinite;
 }
 
 .timer-overlay-label {
@@ -382,13 +478,13 @@ html, body {
 
 .timer-confirm {
   font-family: var(--font-mono);
-  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  font-size: clamp(1.1rem, 2.8vw, 1.5rem);
   letter-spacing: 0.08em;
-  padding: 1.4em 2.4em;
+  padding: 1.5em 2.6em;
   background: var(--accent2);
   color: var(--paper);
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
 }
 

@@ -26,6 +26,9 @@
 
   <main class="board" id="board">
 
+    <!-- Running-timer ribbon — empty and invisible when nothing's running -->
+    <div class="timer-ribbon" id="timer-ribbon"></div>
+
     <section class="clock-block">
       <div class="clock" id="clock">--:--:--</div>
       <div class="date" id="date">-- --- ----</div>
@@ -62,12 +65,11 @@
          entries + their own modal-overlay for future widgets. -->
     <section class="launcher-row" id="launcher-row">
       <button class="launcher-btn" id="open-timer-modal">⏱ Timer</button>
-      <div class="timer-active" id="timer-active"></div>
     </section>
 
     <div class="status-row" id="status-row"></div>
 
-    <!-- Timer picker (not an alarm — a dismissible selection panel -) -->
+    <!-- Timer picker (not an alarm — a dismissible selection panel) -->
     <div class="modal-overlay" id="timer-modal">
       <div class="modal-card">
         <div class="modal-header">
