@@ -29,26 +29,17 @@
     <!-- Running-timer ribbon — empty and invisible when nothing's running -->
     <div class="timer-ribbon" id="timer-ribbon"></div>
 
-    <section class="clock-block">
-      <div class="clock-row">
-        <span class="clock" id="clock-main">--:--</span><span class="clock-seconds" id="clock-seconds">--</span>
-      </div>
-    </section>
+    <section class="top-row">
 
-    <div class="hairline"></div>
-
-    <section class="lower">
-
-      <div class="panel today-panel" id="today-panel">
+      <div class="panel time-date-panel">
+        <div class="clock-row">
+          <span class="clock" id="clock-main">--:--</span><span class="clock-seconds" id="clock-seconds">--</span>
+        </div>
         <div class="calendar-block">
           <div class="calendar-weekday" id="cal-weekday">-----</div>
           <div class="calendar-day" id="cal-day">--</div>
           <div class="calendar-month" id="cal-month">------- ----</div>
         </div>
-        <div class="panel-label agenda-label">AGENDA</div>
-        <ul class="agenda-list" id="agenda-list">
-          <li class="agenda-empty">Loading…</li>
-        </ul>
       </div>
 
       <div class="panel-divider"></div>
@@ -63,6 +54,15 @@
         <div class="weather-secondary" id="weather-secondary">KOZHIKODE --°</div>
       </div>
 
+    </section>
+
+    <div class="hairline"></div>
+
+    <section class="agenda-section" id="today-panel">
+      <div class="panel-label agenda-label">AGENDA</div>
+      <ul class="agenda-list" id="agenda-list">
+        <li class="agenda-empty">Loading…</li>
+      </ul>
     </section>
 
     <div class="hairline"></div>

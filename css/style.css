@@ -85,9 +85,10 @@ html, body {
 /* Ribbon needs breathing room before the clock below it */
 .timer-ribbon:not(:empty) { margin-bottom: 3vh; }
 
-/* ---------- Clock ---------- */
+/* ---------- Clock (now shares the top row with weather, so sized
+   for a half-width column rather than the full board width) ---------- */
 
-.clock-block {
+.time-date-panel {
   display: flex;
   flex-direction: column;
 }
@@ -100,7 +101,7 @@ html, body {
 .clock {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(3.2rem, 13vw, 7.5rem);
+  font-size: clamp(2.6rem, 9vw, 5.5rem);
   line-height: 1;
   letter-spacing: 0.01em;
   font-variant-numeric: tabular-nums;
@@ -112,7 +113,7 @@ html, body {
 .clock-seconds {
   font-family: var(--font-mono);
   font-weight: 500;
-  font-size: clamp(1.1rem, 3.6vw, 1.9rem);
+  font-size: clamp(0.9rem, 2.6vw, 1.4rem);
   color: var(--ink-faint);
   margin-left: 0.15em;
   font-variant-numeric: tabular-nums;
@@ -133,9 +134,9 @@ html, body {
   width: 100%;
 }
 
-/* ---------- Lower panels ---------- */
+/* ---------- Top row: time+date | weather ---------- */
 
-.lower {
+.top-row {
   display: flex;
   align-items: stretch;
   gap: 5vw;
@@ -159,15 +160,15 @@ html, body {
   margin-bottom: 1.2vh;
 }
 
-/* Today column: calendar block header + agenda list stacked as one */
+/* Date, paired directly under the clock in the same column */
 
 .calendar-block {
-  margin-bottom: 3vh;
+  margin-top: 1.5vh;
 }
 
 .calendar-weekday {
   font-family: var(--font-mono);
-  font-size: clamp(0.75rem, 1.8vw, 0.95rem);
+  font-size: clamp(0.7rem, 1.6vw, 0.85rem);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--ink-faint);
@@ -176,19 +177,23 @@ html, body {
 .calendar-day {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(2.6rem, 7.5vw, 4.4rem);
+  font-size: clamp(1.8rem, 5.5vw, 3.2rem);
   line-height: 1;
   color: var(--ink);
-  margin: 0.5vh 0;
+  margin: 0.4vh 0;
 }
 
 .calendar-month {
   font-family: var(--font-mono);
-  font-size: clamp(0.8rem, 1.9vw, 1rem);
+  font-size: clamp(0.7rem, 1.7vw, 0.9rem);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink-soft);
 }
+
+/* ---------- Agenda — full-width section below the top row ---------- */
+
+.agenda-section {}
 
 .agenda-label { margin-bottom: 1.2vh; }
 
@@ -537,6 +542,6 @@ html, body {
 /* ---------- Small phone / portrait fallback ---------- */
 
 @media (max-aspect-ratio: 4/5) {
-  .lower { flex-direction: column; gap: 3vh; }
+  .top-row { flex-direction: column; gap: 3vh; }
   .panel-divider { display: none; height: 1px; width: 100%; background: var(--rule); }
 }
