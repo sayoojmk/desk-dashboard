@@ -2,8 +2,9 @@
 // WEATHER WIDGET
 // Uses Open-Meteo (https://open-meteo.com) — free, no API key,
 // no CORS issues, fine to call directly from a static site.
-// Shows CONFIG.location prominently and CONFIG.secondaryLocation
-// (if set) as a compact second line.
+// Shows CONFIG.location prominently (temp, condition, humidity,
+// high/low, wind) and CONFIG.secondaryLocation (if set) as a
+// compact second line.
 // ============================================================
 
 const WeatherWidget = {
@@ -37,7 +38,7 @@ const WeatherWidget = {
   buildUrl(loc) {
     const unit = CONFIG.tempUnit === "fahrenheit" ? "fahrenheit" : "celsius";
     return `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}` +
-      `&current=temperature_2m,weather_code,wind_speed_10m` +
+      `&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m` +
       `&daily=temperature_2m_max,temperature_2m_min` +
       `&temperature_unit=${unit}&wind_speed_unit=kmh&timezone=auto`;
   },
@@ -83,7 +84,8 @@ const WeatherWidget = {
     this.els.sub.textContent =
       `H:${Math.round(day.temperature_2m_max[0])}${unitSymbol} ` +
       `L:${Math.round(day.temperature_2m_min[0])}${unitSymbol} · ` +
-      `WIND ${Math.round(cur.wind_speed_10m)} KM/H`;
+      `WIND ${Math.round(cur.wind_speed_10m)} KM/H · ` +
+      `HUM ${Math.round(cur.relative_humidity_2m)}%`;
   },
 
   renderSecondary(data) {

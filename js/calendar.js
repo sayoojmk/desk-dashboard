@@ -104,7 +104,7 @@ const CalendarWidget = {
         </li>
       `).join("");
     }
-    if (CONFIG.flickerOnRefresh) App.flicker(document.getElementById("agenda-panel"));
+    if (CONFIG.flickerOnRefresh) App.flicker(document.getElementById("today-panel"));
   },
 
   formatTime(d) {

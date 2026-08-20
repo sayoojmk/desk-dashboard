@@ -30,13 +30,28 @@
     <div class="timer-ribbon" id="timer-ribbon"></div>
 
     <section class="clock-block">
-      <div class="clock" id="clock">--:--:--</div>
-      <div class="date" id="date">-- --- ----</div>
+      <div class="clock-row">
+        <span class="clock" id="clock-main">--:--</span><span class="clock-seconds" id="clock-seconds">--</span>
+      </div>
     </section>
 
     <div class="hairline"></div>
 
     <section class="lower">
+
+      <div class="panel today-panel" id="today-panel">
+        <div class="calendar-block">
+          <div class="calendar-weekday" id="cal-weekday">-----</div>
+          <div class="calendar-day" id="cal-day">--</div>
+          <div class="calendar-month" id="cal-month">------- ----</div>
+        </div>
+        <div class="panel-label agenda-label">AGENDA</div>
+        <ul class="agenda-list" id="agenda-list">
+          <li class="agenda-empty">Loading…</li>
+        </ul>
+      </div>
+
+      <div class="panel-divider"></div>
 
       <div class="panel weather-panel" id="weather-panel">
         <div class="panel-label">WEATHER</div>
@@ -44,17 +59,8 @@
           <span class="weather-temp" id="weather-temp">--°</span>
           <span class="weather-desc" id="weather-desc">Loading</span>
         </div>
-        <div class="weather-sub" id="weather-sub">H:-- L:-- · WIND -- KM/H</div>
+        <div class="weather-sub" id="weather-sub">H:-- L:-- · WIND -- KM/H · HUM --%</div>
         <div class="weather-secondary" id="weather-secondary">KOZHIKODE --°</div>
-      </div>
-
-      <div class="panel-divider"></div>
-
-      <div class="panel agenda-panel" id="agenda-panel">
-        <div class="panel-label">AGENDA</div>
-        <ul class="agenda-list" id="agenda-list">
-          <li class="agenda-empty">Loading…</li>
-        </ul>
       </div>
 
     </section>

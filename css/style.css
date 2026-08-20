@@ -90,7 +90,11 @@ html, body {
 .clock-block {
   display: flex;
   flex-direction: column;
-  gap: 0.8vh;
+}
+
+.clock-row {
+  display: flex;
+  align-items: baseline;
 }
 
 .clock {
@@ -103,14 +107,21 @@ html, body {
   color: var(--ink);
 }
 
-/* Bigger, calendar-glance date — a secondary hero, not a caption */
-.date {
+/* Small, muted, gently pulsing — a "still alive" heartbeat rather
+   than a number meant to be read. Deliberately subordinate to HH:MM. */
+.clock-seconds {
   font-family: var(--font-mono);
-  font-weight: 600;
-  font-size: clamp(1.3rem, 4.6vw, 2.5rem);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
+  font-weight: 500;
+  font-size: clamp(1.1rem, 3.6vw, 1.9rem);
+  color: var(--ink-faint);
+  margin-left: 0.15em;
+  font-variant-numeric: tabular-nums;
+  animation: seconds-pulse 2s ease-in-out infinite;
+}
+
+@keyframes seconds-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.45; }
 }
 
 /* ---------- Divider ---------- */
@@ -147,6 +158,39 @@ html, body {
   color: var(--ink-faint);
   margin-bottom: 1.2vh;
 }
+
+/* Today column: calendar block header + agenda list stacked as one */
+
+.calendar-block {
+  margin-bottom: 3vh;
+}
+
+.calendar-weekday {
+  font-family: var(--font-mono);
+  font-size: clamp(0.75rem, 1.8vw, 0.95rem);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.calendar-day {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.6rem, 7.5vw, 4.4rem);
+  line-height: 1;
+  color: var(--ink);
+  margin: 0.5vh 0;
+}
+
+.calendar-month {
+  font-family: var(--font-mono);
+  font-size: clamp(0.8rem, 1.9vw, 1rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.agenda-label { margin-bottom: 1.2vh; }
 
 /* Weather */
 
