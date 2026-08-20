@@ -539,7 +539,7 @@ html, body {
 
 .timer-confirm:active { opacity: 0.8; }
 
-/* ---------- Small phone / portrait fallback ---------- */
+/* ---------- Small phone / portrait fallback --------- */
 
 @media (max-aspect-ratio: 4/5) {
   .top-row { flex-direction: column; gap: 3vh; }
